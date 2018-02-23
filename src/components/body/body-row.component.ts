@@ -53,7 +53,7 @@ export class DataTableBodyRowComponent implements DoCheck {
 
     this._innerWidth = val;
     this.recalculateColumns();
-    // this.buildStylesByGroup();
+    this.buildStylesByGroup();
   }
 
   get innerWidth(): number {
@@ -71,7 +71,7 @@ export class DataTableBodyRowComponent implements DoCheck {
   @Input()
   set offsetX(val: number) {
     this._offsetX = val;
-    // this.buildStylesByGroup();
+    this.buildStylesByGroup();
   }
   get offsetX() { return this._offsetX; }
 
@@ -144,33 +144,33 @@ export class DataTableBodyRowComponent implements DoCheck {
     return column.$$id;
   }
 
-  // buildStylesByGroup() {
-  //   this._groupStyles['left'] = this.calcStylesByGroup('left');
-  //   this._groupStyles['center'] = this.calcStylesByGroup('center');
-  //   this._groupStyles['right'] = this.calcStylesByGroup('right');
-  //   this.cd.markForCheck();
-  // }
-  //
-  // calcStylesByGroup(group: string) {
-  //   const widths = this._columnGroupWidths;
-  //   const offsetX = this.offsetX;
-  //
-  //   const styles = {
-  //     width: `${widths[group]}px`
-  //   };
-  //
-  //   if (group === 'left') {
-  //     translateXY(styles, offsetX, 0);
-  //   } else if (group === 'right') {
-  //     const bodyWidth = parseInt(this.innerWidth + '', 0);
-  //     const totalDiff = widths.total - bodyWidth;
-  //     const offsetDiff = totalDiff - offsetX;
-  //     const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-  //     translateXY(styles, offset, 0);
-  //   }
-  //
-  //   return styles;
-  // }
+  buildStylesByGroup() {
+    this._groupStyles['left'] = this.calcStylesByGroup('left');
+    this._groupStyles['center'] = this.calcStylesByGroup('center');
+    this._groupStyles['right'] = this.calcStylesByGroup('right');
+    this.cd.markForCheck();
+  }
+
+  calcStylesByGroup(group: string) {
+    const widths = this._columnGroupWidths;
+    const offsetX = this.offsetX;
+
+    const styles = {
+      width: `${widths[group]}px`
+    };
+
+    if (group === 'left') {
+      translateXY(styles, offsetX, 0);
+    } else if (group === 'right') {
+      const bodyWidth = parseInt(this.innerWidth + '', 0);
+      const totalDiff = widths.total - bodyWidth;
+      const offsetDiff = totalDiff - offsetX;
+      const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
+      translateXY(styles, offset, 0);
+    }
+
+    return styles;
+  }
 
   onActivate(event: any, index: number): void {
     event.cellIndex = index;

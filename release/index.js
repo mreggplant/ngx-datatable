@@ -2383,7 +2383,7 @@ var DataTableBodyRowComponent = /** @class */ (function () {
             // }
             this._innerWidth = val;
             this.recalculateColumns();
-            // this.buildStylesByGroup();
+            this.buildStylesByGroup();
         },
         enumerable: true,
         configurable: true
@@ -2392,7 +2392,7 @@ var DataTableBodyRowComponent = /** @class */ (function () {
         get: function () { return this._offsetX; },
         set: function (val) {
             this._offsetX = val;
-            // this.buildStylesByGroup();
+            this.buildStylesByGroup();
         },
         enumerable: true,
         configurable: true
@@ -2443,33 +2443,30 @@ var DataTableBodyRowComponent = /** @class */ (function () {
     DataTableBodyRowComponent.prototype.columnTrackingFn = function (index, column) {
         return column.$$id;
     };
-    // buildStylesByGroup() {
-    //   this._groupStyles['left'] = this.calcStylesByGroup('left');
-    //   this._groupStyles['center'] = this.calcStylesByGroup('center');
-    //   this._groupStyles['right'] = this.calcStylesByGroup('right');
-    //   this.cd.markForCheck();
-    // }
-    //
-    // calcStylesByGroup(group: string) {
-    //   const widths = this._columnGroupWidths;
-    //   const offsetX = this.offsetX;
-    //
-    //   const styles = {
-    //     width: `${widths[group]}px`
-    //   };
-    //
-    //   if (group === 'left') {
-    //     translateXY(styles, offsetX, 0);
-    //   } else if (group === 'right') {
-    //     const bodyWidth = parseInt(this.innerWidth + '', 0);
-    //     const totalDiff = widths.total - bodyWidth;
-    //     const offsetDiff = totalDiff - offsetX;
-    //     const offset = (offsetDiff + this.scrollbarHelper.width) * -1;
-    //     translateXY(styles, offset, 0);
-    //   }
-    //
-    //   return styles;
-    // }
+    DataTableBodyRowComponent.prototype.buildStylesByGroup = function () {
+        this._groupStyles['left'] = this.calcStylesByGroup('left');
+        this._groupStyles['center'] = this.calcStylesByGroup('center');
+        this._groupStyles['right'] = this.calcStylesByGroup('right');
+        this.cd.markForCheck();
+    };
+    DataTableBodyRowComponent.prototype.calcStylesByGroup = function (group) {
+        var widths = this._columnGroupWidths;
+        var offsetX = this.offsetX;
+        var styles = {
+            width: widths[group] + "px"
+        };
+        if (group === 'left') {
+            utils_1.translateXY(styles, offsetX, 0);
+        }
+        else if (group === 'right') {
+            var bodyWidth = parseInt(this.innerWidth + '', 0);
+            var totalDiff = widths.total - bodyWidth;
+            var offsetDiff = totalDiff - offsetX;
+            var offset = (offsetDiff + this.scrollbarHelper.width) * -1;
+            utils_1.translateXY(styles, offset, 0);
+        }
+        return styles;
+    };
     DataTableBodyRowComponent.prototype.onActivate = function (event, index) {
         event.cellIndex = index;
         event.rowElement = this._element;
