@@ -35,13 +35,16 @@ var RowHeightCache = /** @class */ (function () {
         var rows = details.rows, rowHeight = details.rowHeight, detailRowHeight = details.detailRowHeight, externalVirtual = details.externalVirtual, rowCount = details.rowCount, rowIndexes = details.rowIndexes, rowExpansions = details.rowExpansions;
         var isFn = typeof rowHeight === 'function';
         var isDetailFn = typeof detailRowHeight === 'function';
-        if (!isFn && isNaN(rowHeight)) {
-            throw new Error("Row Height cache initialization failed. Please ensure that 'rowHeight' is a\n        valid number or function value: (" + rowHeight + ") when 'scrollbarV' is enabled.");
-        }
-        // Add this additional guard in case detailRowHeight is set to 'auto' as it wont work.
-        if (!isDetailFn && isNaN(detailRowHeight)) {
-            throw new Error("Row Height cache initialization failed. Please ensure that 'detailRowHeight' is a\n        valid number or function value: (" + detailRowHeight + ") when 'scrollbarV' is enabled.");
-        }
+        // if (!isFn && isNaN(rowHeight)) {
+        //   throw new Error(`Row Height cache initialization failed. Please ensure that 'rowHeight' is a
+        //     valid number or function value: (${rowHeight}) when 'scrollbarV' is enabled.`);
+        // }
+        //
+        // // Add this additional guard in case detailRowHeight is set to 'auto' as it wont work.
+        // if (!isDetailFn && isNaN(detailRowHeight)) {
+        //   throw new Error(`Row Height cache initialization failed. Please ensure that 'detailRowHeight' is a
+        //     valid number or function value: (${detailRowHeight}) when 'scrollbarV' is enabled.`);
+        // }
         var n = externalVirtual ? rowCount : rows.length;
         this.treeArray = new Array(n);
         for (var i = 0; i < n; ++i) {

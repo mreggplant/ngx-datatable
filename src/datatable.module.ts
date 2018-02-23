@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { VirtualScrollModule } from 'angular2-virtual-scroll';
 
 import {
   DatatableComponent,
@@ -40,7 +41,8 @@ import {
 
 @NgModule({
   imports: [
-    CommonModule
+    CommonModule,
+    VirtualScrollModule
   ],
   providers: [
     ScrollbarHelper,

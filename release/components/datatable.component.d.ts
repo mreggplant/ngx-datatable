@@ -12,6 +12,7 @@ export declare class DatatableComponent implements OnInit, DoCheck, AfterViewIni
     private scrollbarHelper;
     private dimensionsHelper;
     private cd;
+    viewPortItems: any;
     /**
      * Gets the rows.
      */
