@@ -48,40 +48,42 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
         (select)="onHeaderSelect($event)"
         (columnContextmenu)="onColumnContextmenu($event)">
       </datatable-header>
-      <datatable-body
-        [groupRowsBy]="groupRowsBy"
-        [groupedRows]="groupedRows"
-        [rows]="_internalRows"
-        [groupExpansionDefault]="groupExpansionDefault"
-        [scrollbarV]="scrollbarV"
-        [scrollbarH]="scrollbarH"
-        [virtualization]="virtualization"
-        [loadingIndicator]="loadingIndicator"
-        [externalPaging]="externalPaging"
-        [rowHeight]="rowHeight"
-        [rowCount]="rowCount"
-        [offset]="offset"
-        [trackByProp]="trackByProp"
-        [columns]="_internalColumns"
-        [pageSize]="pageSize"
-        [offsetX]="_offsetX | async"
-        [rowDetail]="rowDetail"
-        [groupHeader]="groupHeader"
-        [selected]="selected"
-        [innerWidth]="_innerWidth"
-        [bodyHeight]="bodyHeight"
-        [selectionType]="selectionType"
-        [emptyMessage]="messages.emptyMessage"
-        [rowIdentity]="rowIdentity"
-        [rowClass]="rowClass"
-        [selectCheck]="selectCheck"
-        [displayCheck]="displayCheck"
-        (page)="onBodyPage($event)"
-        (activate)="activate.emit($event)"
-        (rowContextmenu)="onRowContextmenu($event)"
-        (select)="onBodySelect($event)"
-        (scroll)="onBodyScroll($event)">
-      </datatable-body>
+      <virtual-scroll [items]="_internalRows" (update)="viewPortItems = $event" [childHeight]="30">
+        <datatable-body
+          [groupRowsBy]="groupRowsBy"
+          [groupedRows]="groupedRows"
+          [rows]="viewPortItems"
+          [groupExpansionDefault]="groupExpansionDefault"
+          [scrollbarV]="scrollbarV"
+          [scrollbarH]="scrollbarH"
+          [virtualization]="virtualization"
+          [loadingIndicator]="loadingIndicator"
+          [externalPaging]="externalPaging"
+          [rowHeight]="rowHeight"
+          [rowCount]="rowCount"
+          [offset]="offset"
+          [trackByProp]="trackByProp"
+          [columns]="_internalColumns"
+          [pageSize]="pageSize"
+          [offsetX]="_offsetX | async"
+          [rowDetail]="rowDetail"
+          [groupHeader]="groupHeader"
+          [selected]="selected"
+          [innerWidth]="_innerWidth"
+          [bodyHeight]="bodyHeight"
+          [selectionType]="selectionType"
+          [emptyMessage]="messages.emptyMessage"
+          [rowIdentity]="rowIdentity"
+          [rowClass]="rowClass"
+          [selectCheck]="selectCheck"
+          [displayCheck]="displayCheck"
+          (page)="onBodyPage($event)"
+          (activate)="activate.emit($event)"
+          (rowContextmenu)="onRowContextmenu($event)"
+          (select)="onBodySelect($event)"
+          (scroll)="onBodyScroll($event)">
+        </datatable-body>
+      </virtual-scroll>
       <datatable-footer
         *ngIf="footerHeight"
         [rowCount]="rowCount"
@@ -108,6 +110,8 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
   }
 })
 export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
+
+  viewPortItems:any;
 
   /**
    * Rows that are displayed in the table.
