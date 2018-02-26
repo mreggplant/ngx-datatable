@@ -379,16 +379,18 @@ export class DataTableBodyComponent implements OnInit, OnDestroy {
         rowIndex++;
       }
     } else {
-      while (rowIndex < last && rowIndex < this.rowCount) {
-        const row = this.rows[rowIndex];
+      if (this.rows) {
+        while (rowIndex < last && rowIndex < this.rowCount) {
+          const row = this.rows[rowIndex];
 
-        if (row) {
-          this.rowIndexes.set(row, rowIndex);
-          temp[idx] = row;
+          if (row) {
+            this.rowIndexes.set(row, rowIndex);
+            temp[idx] = row;
+          }
+
+          idx++;
+          rowIndex++;
         }
-
-        idx++;
-        rowIndex++;
       }
     }
 
