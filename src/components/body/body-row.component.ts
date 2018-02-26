@@ -46,10 +46,10 @@ export class DataTableBodyRowComponent implements DoCheck {
 
   @Input() set innerWidth(val: number) {
     // Also called in recalculateColumns
-    // if (this._columns) {
-    //   const colByPin = columnsByPin(this._columns);
-    //   this._columnGroupWidths = columnGroupWidths(colByPin, colByPin);
-    // }
+    if (this._columns) {
+      const colByPin = columnsByPin(this._columns);
+      this._columnGroupWidths = columnGroupWidths(colByPin, colByPin);
+    }
 
     this._innerWidth = val;
     this.recalculateColumns();

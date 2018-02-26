@@ -2377,10 +2377,10 @@ var DataTableBodyRowComponent = /** @class */ (function () {
         },
         set: function (val) {
             // Also called in recalculateColumns
-            // if (this._columns) {
-            //   const colByPin = columnsByPin(this._columns);
-            //   this._columnGroupWidths = columnGroupWidths(colByPin, colByPin);
-            // }
+            if (this._columns) {
+                var colByPin = utils_1.columnsByPin(this._columns);
+                this._columnGroupWidths = utils_1.columnGroupWidths(colByPin, colByPin);
+            }
             this._innerWidth = val;
             this.recalculateColumns();
             this.buildStylesByGroup();
@@ -4112,7 +4112,7 @@ var DatatableComponent = /** @class */ (function () {
                 this._internalRows = utils_1.sortRows(this._internalRows, this._internalColumns, this.sorts);
             }
             // recalculate sizes/etc
-            // this.recalculate();
+            this.recalculate();
             if (this._rows && this._groupRowsBy) {
                 // If a column has been specified in _groupRowsBy created a new array with the data grouped by that row
                 this.groupedRows = this.groupArrayBy(this._rows, this._groupRowsBy);
@@ -4155,7 +4155,7 @@ var DatatableComponent = /** @class */ (function () {
             if (val) {
                 this._internalColumns = val.slice();
                 utils_1.setColumnDefaults(this._internalColumns);
-                // this.recalculateColumns();
+                this.recalculateColumns();
             }
             this._columns = val;
         },
@@ -4176,7 +4176,7 @@ var DatatableComponent = /** @class */ (function () {
         set: function (val) {
             this._limit = val;
             // recalculate sizes/etc
-            // this.recalculate();
+            this.recalculate();
         },
         enumerable: true,
         configurable: true
@@ -4195,7 +4195,7 @@ var DatatableComponent = /** @class */ (function () {
         set: function (val) {
             this._count = val;
             // recalculate sizes/etc
-            // this.recalculate();
+            this.recalculate();
         },
         enumerable: true,
         configurable: true
@@ -4364,7 +4364,7 @@ var DatatableComponent = /** @class */ (function () {
         // need to call this immediatly to size
         // if the table is hidden the visibility
         // listener will invoke this itself upon show
-        // this.recalculate();
+        this.recalculate();
     };
     /**
      * Lifecycle hook that is called after a component's
@@ -4517,7 +4517,7 @@ var DatatableComponent = /** @class */ (function () {
                 height = height - this.footerHeight;
             this.bodyHeight = height;
         }
-        // this.recalculatePages();
+        this.recalculatePages();
     };
     /**
      * Recalculates the pages after a update.
@@ -4974,7 +4974,7 @@ var DatatableComponent = /** @class */ (function () {
     DatatableComponent = __decorate([
         core_1.Component({
             selector: 'ngx-datatable',
-            template: "\n    <div visibilityObserver>\n      <datatable-header\n        *ngIf=\"headerHeight\"\n        [sorts]=\"sorts\"\n        [sortType]=\"sortType\"\n        [scrollbarH]=\"scrollbarH\"\n        [innerWidth]=\"_innerWidth\"\n        [offsetX]=\"_offsetX | async\"\n        [dealsWithGroup]=\"groupedRows\"\n        [columns]=\"_internalColumns\"\n        [headerHeight]=\"headerHeight\"\n        [reorderable]=\"reorderable\"\n        [sortAscendingIcon]=\"cssClasses.sortAscending\"\n        [sortDescendingIcon]=\"cssClasses.sortDescending\"\n        [allRowsSelected]=\"allRowsSelected\"\n        [selectionType]=\"selectionType\"\n        (sort)=\"onColumnSort($event)\"\n        (resize)=\"onColumnResize($event)\"\n        (reorder)=\"onColumnReorder($event)\"\n        (select)=\"onHeaderSelect($event)\"\n        (columnContextmenu)=\"onColumnContextmenu($event)\">\n      </datatable-header>\n      <virtual-scroll [items]=\"_internalRows\" (update)=\"viewPortItems = $event\" [childHeight]=\"30\">\n        <datatable-body\n          [groupRowsBy]=\"groupRowsBy\"\n          [groupedRows]=\"groupedRows\"\n          [rows]=\"viewPortItems\"\n          [groupExpansionDefault]=\"groupExpansionDefault\"\n          [scrollbarV]=\"scrollbarV\"\n          [scrollbarH]=\"scrollbarH\"\n          [virtualization]=\"virtualization\"\n          [loadingIndicator]=\"loadingIndicator\"\n          [externalPaging]=\"externalPaging\"\n          [rowHeight]=\"rowHeight\"\n          [rowCount]=\"rowCount\"\n          [offset]=\"offset\"\n          [trackByProp]=\"trackByProp\"\n          [columns]=\"_internalColumns\"\n          [pageSize]=\"pageSize\"\n          [offsetX]=\"_offsetX | async\"\n          [rowDetail]=\"rowDetail\"\n          [groupHeader]=\"groupHeader\"\n          [selected]=\"selected\"\n          [innerWidth]=\"_innerWidth\"\n          [bodyHeight]=\"bodyHeight\"\n          [selectionType]=\"selectionType\"\n          [emptyMessage]=\"messages.emptyMessage\"\n          [rowIdentity]=\"rowIdentity\"\n          [rowClass]=\"rowClass\"\n          [selectCheck]=\"selectCheck\"\n          [displayCheck]=\"displayCheck\"\n          (page)=\"onBodyPage($event)\"\n          (activate)=\"activate.emit($event)\"\n          (rowContextmenu)=\"onRowContextmenu($event)\"\n          (select)=\"onBodySelect($event)\"\n          (scroll)=\"onBodyScroll($event)\">\n        </datatable-body>\n      </virtual-scroll>\n      <datatable-footer\n        *ngIf=\"footerHeight\"\n        [rowCount]=\"rowCount\"\n        [pageSize]=\"pageSize\"\n        [offset]=\"offset\"\n        [footerHeight]=\"footerHeight\"\n        [footerTemplate]=\"footer\"\n        [totalMessage]=\"messages.totalMessage\"\n        [pagerLeftArrowIcon]=\"cssClasses.pagerLeftArrow\"\n        [pagerRightArrowIcon]=\"cssClasses.pagerRightArrow\"\n        [pagerPreviousIcon]=\"cssClasses.pagerPrevious\"\n        [selectedCount]=\"selected.length\"\n        [selectedMessage]=\"!!selectionType && messages.selectedMessage\"\n        [pagerNextIcon]=\"cssClasses.pagerNext\"\n        (page)=\"onFooterPage($event)\">\n      </datatable-footer>\n    </div>\n  ",
+            template: "\n    <div\n      visibilityObserver\n      (visible)=\"recalculate()\">\n      <datatable-header\n        *ngIf=\"headerHeight\"\n        [sorts]=\"sorts\"\n        [sortType]=\"sortType\"\n        [scrollbarH]=\"scrollbarH\"\n        [innerWidth]=\"_innerWidth\"\n        [offsetX]=\"_offsetX | async\"\n        [dealsWithGroup]=\"groupedRows\"\n        [columns]=\"_internalColumns\"\n        [headerHeight]=\"headerHeight\"\n        [reorderable]=\"reorderable\"\n        [sortAscendingIcon]=\"cssClasses.sortAscending\"\n        [sortDescendingIcon]=\"cssClasses.sortDescending\"\n        [allRowsSelected]=\"allRowsSelected\"\n        [selectionType]=\"selectionType\"\n        (sort)=\"onColumnSort($event)\"\n        (resize)=\"onColumnResize($event)\"\n        (reorder)=\"onColumnReorder($event)\"\n        (select)=\"onHeaderSelect($event)\"\n        (columnContextmenu)=\"onColumnContextmenu($event)\">\n      </datatable-header>\n      <virtual-scroll [items]=\"_internalRows\" (update)=\"viewPortItems = $event\" [childHeight]=\"30\">\n        <datatable-body\n          [groupRowsBy]=\"groupRowsBy\"\n          [groupedRows]=\"groupedRows\"\n          [rows]=\"viewPortItems\"\n          [groupExpansionDefault]=\"groupExpansionDefault\"\n          [scrollbarV]=\"scrollbarV\"\n          [scrollbarH]=\"scrollbarH\"\n          [virtualization]=\"virtualization\"\n          [loadingIndicator]=\"loadingIndicator\"\n          [externalPaging]=\"externalPaging\"\n          [rowHeight]=\"rowHeight\"\n          [rowCount]=\"rowCount\"\n          [offset]=\"offset\"\n          [trackByProp]=\"trackByProp\"\n          [columns]=\"_internalColumns\"\n          [pageSize]=\"pageSize\"\n          [offsetX]=\"_offsetX | async\"\n          [rowDetail]=\"rowDetail\"\n          [groupHeader]=\"groupHeader\"\n          [selected]=\"selected\"\n          [innerWidth]=\"_innerWidth\"\n          [bodyHeight]=\"bodyHeight\"\n          [selectionType]=\"selectionType\"\n          [emptyMessage]=\"messages.emptyMessage\"\n          [rowIdentity]=\"rowIdentity\"\n          [rowClass]=\"rowClass\"\n          [selectCheck]=\"selectCheck\"\n          [displayCheck]=\"displayCheck\"\n          (page)=\"onBodyPage($event)\"\n          (activate)=\"activate.emit($event)\"\n          (rowContextmenu)=\"onRowContextmenu($event)\"\n          (select)=\"onBodySelect($event)\"\n          (scroll)=\"onBodyScroll($event)\">\n        </datatable-body>\n      </virtual-scroll>\n      <datatable-footer\n        *ngIf=\"footerHeight\"\n        [rowCount]=\"rowCount\"\n        [pageSize]=\"pageSize\"\n        [offset]=\"offset\"\n        [footerHeight]=\"footerHeight\"\n        [footerTemplate]=\"footer\"\n        [totalMessage]=\"messages.totalMessage\"\n        [pagerLeftArrowIcon]=\"cssClasses.pagerLeftArrow\"\n        [pagerRightArrowIcon]=\"cssClasses.pagerRightArrow\"\n        [pagerPreviousIcon]=\"cssClasses.pagerPrevious\"\n        [selectedCount]=\"selected.length\"\n        [selectedMessage]=\"!!selectionType && messages.selectedMessage\"\n        [pagerNextIcon]=\"cssClasses.pagerNext\"\n        (page)=\"onFooterPage($event)\">\n      </datatable-footer>\n    </div>\n  ",
             changeDetection: core_1.ChangeDetectionStrategy.OnPush,
             encapsulation: core_1.ViewEncapsulation.None,
             styles: [__webpack_require__("./src/components/datatable.component.scss")],
