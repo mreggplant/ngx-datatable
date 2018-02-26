@@ -2376,6 +2376,7 @@ var DataTableBodyRowComponent = /** @class */ (function () {
             return this._innerWidth;
         },
         set: function (val) {
+            // Also called in recalculateColumns
             if (this._columns) {
                 var colByPin = utils_1.columnsByPin(this._columns);
                 this._columnGroupWidths = utils_1.columnGroupWidths(colByPin, colByPin);
