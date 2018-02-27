@@ -48,7 +48,7 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
         (select)="onHeaderSelect($event)"
         (columnContextmenu)="onColumnContextmenu($event)">
       </datatable-header>
-      <virtual-scroll [items]="_internalRows" (update)="viewPortItems = $event" [childHeight]="30">
+      <virtual-scroll *ngIf="virtualScroller" [items]="_internalRows" (update)="viewPortItems = $event" [childHeight]="30">
         <datatable-body
           [groupRowsBy]="groupRowsBy"
           [groupedRows]="groupedRows"
@@ -84,6 +84,40 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
           (scroll)="onBodyScroll($event)">
         </datatable-body>
       </virtual-scroll>
+      <datatable-body *ngIf="!virtualScroller"
+          [groupRowsBy]="groupRowsBy"
+          [groupedRows]="groupedRows"
+          [rows]="_internalRows"
+          [groupExpansionDefault]="groupExpansionDefault"
+          [scrollbarV]="scrollbarV"
+          [scrollbarH]="scrollbarH"
+          [virtualization]="virtualization"
+          [loadingIndicator]="loadingIndicator"
+          [externalPaging]="externalPaging"
+          [rowHeight]="rowHeight"
+          [rowCount]="rowCount"
+          [offset]="offset"
+          [trackByProp]="trackByProp"
+          [columns]="_internalColumns"
+          [pageSize]="pageSize"
+          [offsetX]="_offsetX | async"
+          [rowDetail]="rowDetail"
+          [groupHeader]="groupHeader"
+          [selected]="selected"
+          [innerWidth]="_innerWidth"
+          [bodyHeight]="bodyHeight"
+          [selectionType]="selectionType"
+          [emptyMessage]="messages.emptyMessage"
+          [rowIdentity]="rowIdentity"
+          [rowClass]="rowClass"
+          [selectCheck]="selectCheck"
+          [displayCheck]="displayCheck"
+          (page)="onBodyPage($event)"
+          (activate)="activate.emit($event)"
+          (rowContextmenu)="onRowContextmenu($event)"
+          (select)="onBodySelect($event)"
+          (scroll)="onBodyScroll($event)">
+        </datatable-body>
       <datatable-footer
         *ngIf="footerHeight"
         [rowCount]="rowCount"
@@ -211,6 +245,12 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
    * Enable vertical scrollbars
    */
   @Input() scrollbarV: boolean = false;
+
+  /**
+   * Enable vertical scrollbars (angular2-virtual-scroll)
+   * Default value true
+   */
+  @Input() virtualScroller: boolean = true;
 
   /**
    * Enable horz scrollbars
