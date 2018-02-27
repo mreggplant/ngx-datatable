@@ -20,6 +20,7 @@ import { DatatableFooterDirective } from './footer';
 import { DataTableHeaderComponent } from './header';
 import { MouseEvent } from '../events';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import {VirtualScrollComponent} from "angular2-virtual-scroll";
 
 @Component({
   selector: 'ngx-datatable',
@@ -655,6 +656,17 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   headerComponent: DataTableHeaderComponent;
 
   /**
+   * Reference to the header component for manually
+   * invoking functions on the header.
+   *
+   * @private
+   * @type {VirtualScrollComponent}
+   * @memberOf VirtualScrollComponent
+   */
+  @ViewChild(VirtualScrollComponent)
+  virtualScrollComponent: VirtualScrollComponent;
+
+  /**
    * Returns if all rows are selected.
    */
   get allRowsSelected(): boolean {
@@ -824,6 +836,9 @@ export class DatatableComponent implements OnInit, DoCheck, AfterViewInit {
   recalculate(): void {
     this.recalculateDims();
     this.recalculateColumns();
+    if (this.virtualScroller && this.virtualScrollComponent) {
+      this.virtualScrollComponent.refresh();
+    }
   }
 
   /**

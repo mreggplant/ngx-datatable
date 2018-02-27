@@ -3932,6 +3932,7 @@ var row_detail_1 = __webpack_require__("./src/components/row-detail/index.ts");
 var footer_1 = __webpack_require__("./src/components/footer/index.ts");
 var header_1 = __webpack_require__("./src/components/header/index.ts");
 var BehaviorSubject_1 = __webpack_require__("rxjs/BehaviorSubject");
+var angular2_virtual_scroll_1 = __webpack_require__("./node_modules/angular2-virtual-scroll/dist/virtual-scroll.js");
 var DatatableComponent = /** @class */ (function () {
     function DatatableComponent(scrollbarHelper, dimensionsHelper, cd, element, differs) {
         this.scrollbarHelper = scrollbarHelper;
@@ -4479,6 +4480,9 @@ var DatatableComponent = /** @class */ (function () {
     DatatableComponent.prototype.recalculate = function () {
         this.recalculateDims();
         this.recalculateColumns();
+        if (this.virtualScroller && this.virtualScrollComponent) {
+            this.virtualScrollComponent.refresh();
+        }
     };
     /**
      * Window resize handler to update sizes.
@@ -4975,6 +4979,10 @@ var DatatableComponent = /** @class */ (function () {
         core_1.ViewChild(header_1.DataTableHeaderComponent),
         __metadata("design:type", header_1.DataTableHeaderComponent)
     ], DatatableComponent.prototype, "headerComponent", void 0);
+    __decorate([
+        core_1.ViewChild(angular2_virtual_scroll_1.VirtualScrollComponent),
+        __metadata("design:type", angular2_virtual_scroll_1.VirtualScrollComponent)
+    ], DatatableComponent.prototype, "virtualScrollComponent", void 0);
     __decorate([
         core_1.HostListener('window:resize'),
         utils_1.throttleable(5),
