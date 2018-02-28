@@ -19,11 +19,11 @@ import { MouseEvent } from '../../events';
       </ng-template>
     </div>
     <ng-content 
-      *ngIf="(groupHeader && groupHeader.template && expanded) || 
+      *ngIf="(groupHeader && groupHeader.template && row?.expanded) || 
              (!groupHeader || !groupHeader.template)">
     </ng-content>
     <div
-      *ngIf="rowDetail && rowDetail.template && (expanded || row?.expanded)"
+      *ngIf="rowDetail && rowDetail.template && row?.expanded"
       [style.height.px]="detailRowHeight"
       class="datatable-row-detail">
       <ng-template
